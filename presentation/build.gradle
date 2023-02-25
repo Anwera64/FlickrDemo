@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.flickrdemo"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -31,10 +31,14 @@ dependencies {
     implementation project(':domain')
     implementation project(':di')
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
+    // KTX
+    implementation "androidx.activity:activity-ktx:1.6.1"
+    
     // XML views setup
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -60,9 +64,4 @@ dependencies {
     // Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
-    // Retrofit setup
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 }
