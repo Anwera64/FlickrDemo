@@ -13,7 +13,7 @@ fun mapPhotoCollectionResponse(
     return PhotoCollection(
         page = photos.page,
         pages = photos.pages,
-        photoIds = photos.photoList.map { photoResponse ->
+        photos = photos.photoList.map { photoResponse ->
             FlickrPhoto(
                 id = photoResponse.id,
                 description = photoResponse.title,
