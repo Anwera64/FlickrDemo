@@ -13,4 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Flickr Demo"
-include ':app'
+include ':presentation'
+include ':domain'
+include ':data'
+include ':di'
