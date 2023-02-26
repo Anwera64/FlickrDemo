@@ -1,4 +1,4 @@
-package com.example.flickrdemo.adapters
+package com.example.flickrdemo.grid.adapters
 
 import androidx.leanback.widget.ArrayObjectAdapter
 

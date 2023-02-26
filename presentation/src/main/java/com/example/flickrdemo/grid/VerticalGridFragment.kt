@@ -1,4 +1,4 @@
-package com.example.flickrdemo
+package com.example.flickrdemo.grid
 
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +7,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.VerticalGridPresenter
 import com.example.domain.entities.PhotoCollection
-import com.example.flickrdemo.adapters.PhotoAdapter
-import com.example.flickrdemo.adapters.PhotoPresenter
+import com.example.flickrdemo.MainActivity
+import com.example.flickrdemo.MainViewModel
+import com.example.flickrdemo.R
+import com.example.flickrdemo.grid.adapters.PhotoAdapter
+import com.example.flickrdemo.grid.adapters.PhotoPresenter
 import com.example.flickrdemo.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 

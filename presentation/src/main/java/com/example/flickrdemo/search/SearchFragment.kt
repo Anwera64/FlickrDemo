@@ -8,7 +8,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import com.example.flickrdemo.MainActivity
 import com.example.flickrdemo.MainViewModel
-import com.example.flickrdemo.VerticalGridFragment
+import com.example.flickrdemo.grid.VerticalGridFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
