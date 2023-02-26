@@ -31,7 +31,7 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
         super.onCreate(savedInstanceState)
         title = getString(R.string.title)
         badgeDrawable =
-            ResourcesCompat.getDrawable(resources, R.drawable.app_icon_your_company, null)
+            ResourcesCompat.getDrawable(resources, R.drawable.app_logo, null)
         adapter = photoAdapter
 
         val gridPresenter = VerticalGridPresenter()
@@ -68,7 +68,17 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
 
     private fun onPhotoCollection(photoCollection: PhotoCollection) {
         Log.d(TAG, "onPhotoCollection: loading ${photoCollection.photos.size} photos")
-        title = when {
+        if (photoCollection.page == 1) {
+            photoAdapter.setItems(photoCollection.photos, null)
+            title = selectTitleForResult(photoCollection)
+            return
+        }
+
+        photoAdapter.addAll(photoAdapter.unmodifiableList<Any>().size, photoCollection.photos)
+    }
+
+    private fun selectTitleForResult(photoCollection: PhotoCollection) =
+        when {
             photoCollection.isSearch && photoCollection.photos.isEmpty() -> {
                 getString(R.string.title_search_empty, photoCollection.searchTerm)
             }
@@ -77,11 +87,4 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
             }
             else -> getString(R.string.title)
         }
-        if (photoCollection.page == 1) {
-            photoAdapter.setItems(photoCollection.photos, null)
-            return
-        }
-
-        photoAdapter.addAll(photoAdapter.unmodifiableList<Any>().size, photoCollection.photos)
-    }
 }

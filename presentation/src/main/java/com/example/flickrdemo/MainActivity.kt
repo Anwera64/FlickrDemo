@@ -1,11 +1,13 @@
 package com.example.flickrdemo
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
+import androidx.leanback.app.BackgroundManager
 import com.example.flickrdemo.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +30,9 @@ class MainActivity : FragmentActivity() {
             if (searchReset) return@addCallback
             finish()
         }
+        val backgroundManager = BackgroundManager.getInstance(this)
+        backgroundManager.attach(window)
+        backgroundManager?.color = Color.BLACK
     }
 
     fun openFragment(fragment: Fragment) {

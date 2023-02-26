@@ -11,7 +11,7 @@
         android:layout_height="@dimen/lb_browse_title_icon_height"
         android:adjustViewBounds="true"
         android:maxWidth="@dimen/lb_browse_title_icon_max_width"
-        android:src="@null"
+        android:importantForAccessibility="no"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
