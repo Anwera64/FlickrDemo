@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.domain.entities.FlickrPhoto
+import com.example.domain.utils.DateUtil
 import com.example.flickrdemo.R
 
 class PhotoPresenter : Presenter() {
@@ -37,7 +38,13 @@ class PhotoPresenter : Presenter() {
     private fun PhotoView.setupImageView(photo: FlickrPhoto) {
         Log.d("Presenter", "binding image: ${photo.photoUrl}")
         binding.titleText.text = photo.description
-        binding.contentText.text = "${photo.username} / ${photo.date}" // TODO apply format
+        val dateString = DateUtil.parseToString(photo.date)
+        binding.contentText.text = resources.getString(
+            R.string.username_date_placeholder,
+            photo.username,
+            dateString
+        )
+
         if (photo.photoUrl.isEmpty() && photo.photoUrl.isBlank()) return
 
         Glide.with(context)
