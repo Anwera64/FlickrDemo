@@ -36,7 +36,6 @@ class PhotoPresenter : Presenter() {
     }
 
     private fun PhotoView.setupImageView(photo: FlickrPhoto) {
-        Log.d("Presenter", "binding image: ${photo.photoUrl}")
         binding.titleText.text = photo.description
         val dateString = DateUtil.parseToString(photo.date)
         binding.contentText.text = resources.getString(

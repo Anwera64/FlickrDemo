@@ -1,5 +1,6 @@
 package com.example.data
 
+import android.util.Log
 import com.example.data.entities.PhotoCollectionResponse
 import com.example.data.mappers.mapPhotoCollectionResponse
 import com.example.data.restservices.FlickrPhotosRestService
@@ -13,8 +14,9 @@ class PhotoRepositoryImpl @Inject constructor(
     private val photoService: FlickrPhotosRestService
 ) : PhotoRepository {
 
-    override suspend fun getFlickrPhotos(): NetworkResponse<PhotoCollection> {
-        val response: Response<PhotoCollectionResponse> = photoService.fetchImages()
+    override suspend fun getFlickrPhotos(page: Int): NetworkResponse<PhotoCollection> {
+        Log.d(this::class.java.name, "requesting page: $page")
+        val response: Response<PhotoCollectionResponse> = photoService.fetchImages(page)
         return NetworkResponse(
             isSuccessFul = response.isSuccessful,
             response = response.body()?.let(::mapPhotoCollectionResponse),

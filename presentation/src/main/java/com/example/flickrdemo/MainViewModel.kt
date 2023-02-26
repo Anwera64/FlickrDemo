@@ -22,8 +22,13 @@ class MainViewModel @Inject constructor(
     private val _photoCollection = MutableLiveData<PhotoCollection>()
     val photoCollection: LiveData<PhotoCollection> = _photoCollection
 
-    fun requestLatestPhotos(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
+    fun requestLatestPhotos() = viewModelScope.launch(Dispatchers.IO) {
         val networkResponse: NetworkResponse<PhotoCollection> = photoUseCase.getLatestPhotos()
+        handlePhotoCollectionResponse(networkResponse)
+    }
+
+    fun requestNextPage() = viewModelScope.launch(Dispatchers.IO) {
+        val networkResponse: NetworkResponse<PhotoCollection> = photoUseCase.requestNexPage()
         handlePhotoCollectionResponse(networkResponse)
     }
 

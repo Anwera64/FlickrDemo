@@ -5,7 +5,7 @@ import com.example.domain.entities.PhotoCollection
 
 interface PhotoRepository {
 
-    suspend fun getFlickrPhotos(): NetworkResponse<PhotoCollection>
+    suspend fun getFlickrPhotos(page: Int): NetworkResponse<PhotoCollection>
 
     suspend fun searchPhotos(searchTerm: String): NetworkResponse<PhotoCollection>
 }

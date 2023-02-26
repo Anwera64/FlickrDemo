@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.leanback.app.VerticalGridSupportFragment
+import androidx.leanback.widget.Row
 import androidx.leanback.widget.VerticalGridPresenter
 import com.example.domain.entities.PhotoCollection
 import com.example.flickrdemo.MainActivity
@@ -39,6 +40,14 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
         setOnSearchClickedListener {
             openSearchFragment()
         }
+
+        setOnItemViewSelectedListener { _, item, _, _ ->
+            val itemList = photoAdapter.unmodifiableList<Any>()
+            val index = itemList.indexOfLast { any -> any == item }
+            if (index == itemList.lastIndex) {
+                viewModel.requestNextPage()
+            }
+        }
     }
 
     private fun openSearchFragment() {
@@ -53,6 +62,11 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
 
     private fun onPhotoCollection(photoCollection: PhotoCollection) {
         Log.d(TAG, "onPhotoCollection: loading ${photoCollection.photos.size} photos")
-        photoAdapter.setItems(photoCollection.photos, null)
+        if (photoCollection.page == 1) {
+            photoAdapter.setItems(photoCollection.photos, null)
+            return
+        }
+
+        photoAdapter.addAll(photoAdapter.unmodifiableList<Any>().size, photoCollection.photos)
     }
 }
