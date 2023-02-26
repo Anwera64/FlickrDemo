@@ -9,6 +9,7 @@ import androidx.leanback.widget.VerticalGridPresenter
 import com.example.domain.entities.PhotoCollection
 import com.example.flickrdemo.adapters.PhotoAdapter
 import com.example.flickrdemo.adapters.PhotoPresenter
+import com.example.flickrdemo.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +32,15 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter()
         gridPresenter.numberOfColumns = NUM_COLUMNS
         setGridPresenter(gridPresenter)
+
+        setOnSearchClickedListener {
+            openSearchFragment()
+        }
+    }
+
+    private fun openSearchFragment() {
+        val mainActivity: MainActivity = activity as? MainActivity ?: return
+        mainActivity.openFragment(SearchFragment())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

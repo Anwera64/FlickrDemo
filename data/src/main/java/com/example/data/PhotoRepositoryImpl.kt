@@ -21,4 +21,13 @@ class PhotoRepositoryImpl @Inject constructor(
             responseCode = response.code()
         )
     }
+
+    override suspend fun searchPhotos(searchTerm: String): NetworkResponse<PhotoCollection> {
+        val response: Response<PhotoCollectionResponse> = photoService.searchImages(searchTerm)
+        return NetworkResponse(
+            isSuccessFul = response.isSuccessful,
+            response = response.body()?.let(::mapPhotoCollectionResponse),
+            responseCode = response.code()
+        )
+    }
 }
