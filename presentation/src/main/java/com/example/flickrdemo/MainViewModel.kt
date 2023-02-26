@@ -22,13 +22,6 @@ class MainViewModel @Inject constructor(
     private val _photoCollection = MutableLiveData<PhotoCollection>()
     val photoCollection: LiveData<PhotoCollection> = _photoCollection
 
-    // TODO Connect to custom header
-    /**
-     * Observable for the search term. A null value indicates that no search is being done.
-     */
-    private val _searchTerm = MutableLiveData<String?>()
-    val searchTerm: LiveData<String?> = _searchTerm
-
     fun requestLatestPhotos() = viewModelScope.launch(Dispatchers.IO) {
         val networkResponse: NetworkResponse<PhotoCollection> = photoUseCase.getLatestPhotos()
         handlePhotoCollectionResponse(networkResponse)
@@ -36,10 +29,10 @@ class MainViewModel @Inject constructor(
 
     fun requestNextPage() = viewModelScope.launch(Dispatchers.IO) {
         val networkResponse: NetworkResponse<PhotoCollection> =
-            if (_searchTerm.value.isNullOrEmpty() || _searchTerm.value.isNullOrBlank()) {
-                photoUseCase.requestNexPage()
-            } else {
+            if (_photoCollection.value?.isSearch == true) {
                 searchSearchUseCase.requestNexPage()
+            } else {
+                photoUseCase.requestNexPage()
             }
         handlePhotoCollectionResponse(networkResponse)
     }
@@ -56,14 +49,10 @@ class MainViewModel @Inject constructor(
         val networkResponse: NetworkResponse<PhotoCollection> =
             searchSearchUseCase.searchPhotos(searchTerm)
         handlePhotoCollectionResponse(networkResponse)
-        if (networkResponse.isSuccessFul) {
-            _searchTerm.postValue(searchTerm)
-        }
     }
 
     fun clearSearch(): Boolean {
         val resetDone = searchSearchUseCase.clearSearch()
-        _searchTerm.postValue(null)
         if (resetDone) {
             requestLatestPhotos()
         }

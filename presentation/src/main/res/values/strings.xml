@@ -16,6 +16,8 @@
     <!-- Error messages -->
     <string name="error_fragment_message">An error occurred</string>
     <string name="dismiss_error">Dismiss</string>
-    <string name="title">Photo Search</string>
+    <string name="title">Most recent uploads to Flickr</string>
+    <string name="title_search">Search results for \"%s\"</string>
+    <string name="title_search_empty">No search results for \"%s\"</string>
     <string name="username_date_placeholder">%s / %s</string>
 </resources>

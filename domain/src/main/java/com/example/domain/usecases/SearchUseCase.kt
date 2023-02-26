@@ -23,6 +23,7 @@ class SearchUseCase @Inject constructor(private val photoRepository: PhotoReposi
             currentPage = searchResult.response?.page ?: 0
             maxPages = searchResult.response?.pages ?: 0
             currentSearchTerm = searchTerm
+            searchResult.response?.searchTerm = searchTerm
         }
         return searchResult
     }
