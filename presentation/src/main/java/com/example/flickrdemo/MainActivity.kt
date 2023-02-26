@@ -1,6 +1,7 @@
 package com.example.flickrdemo
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -22,6 +23,11 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.requestLatestPhotos()
+        onBackPressedDispatcher.addCallback {
+            val searchReset = viewModel.clearSearch()
+            if (searchReset) return@addCallback
+            finish()
+        }
     }
 
     fun openFragment(fragment: Fragment) {

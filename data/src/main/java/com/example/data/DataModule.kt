@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -18,11 +19,15 @@ object DataModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            setLevel(HttpLoggingInterceptor.Level.BASIC)
+        }
         return OkHttpClient.Builder()
             .connectTimeout(
                 timeout = 5,
                 unit = TimeUnit.SECONDS
             )
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 

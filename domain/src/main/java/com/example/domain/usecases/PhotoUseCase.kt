@@ -1,6 +1,5 @@
 package com.example.domain.usecases
 
-import android.util.Log
 import com.example.domain.entities.NetworkResponse
 import com.example.domain.entities.PhotoCollection
 import com.example.domain.repositories.PhotoRepository

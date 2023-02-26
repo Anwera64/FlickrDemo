@@ -12,5 +12,8 @@ interface FlickrPhotosRestService {
     suspend fun fetchImages(@Query("page") page: Int): Response<PhotoCollectionResponse>
 
     @GET("?method=flickr.photos.search&format=json&api_key=${BuildConfig.FLICK_API_KEY}&nojsoncallback=1&extras=owner_name,date_taken")
-    suspend fun searchImages(@Query("text") searchTerm: String): Response<PhotoCollectionResponse>
+    suspend fun searchImages(
+        @Query("text") searchTerm: String,
+        @Query("page") page: Int
+    ): Response<PhotoCollectionResponse>
 }
