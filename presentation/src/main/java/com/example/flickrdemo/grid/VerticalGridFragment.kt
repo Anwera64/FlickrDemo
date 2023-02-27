@@ -30,8 +30,7 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = getString(R.string.title)
-        badgeDrawable =
-            ResourcesCompat.getDrawable(resources, R.drawable.app_logo, null)
+        badgeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.app_logo, null)
         adapter = photoAdapter
 
         val gridPresenter = VerticalGridPresenter()
@@ -47,6 +46,10 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
         }
     }
 
+    /**
+     * React to the selected position. If the user reaches the last one, request the next page
+     * of photos.
+     */
     private fun onSelectedPositionChanged(item: Any?) {
         val itemList = photoAdapter.unmodifiableList<Any>()
         val index = itemList.indexOfLast { any -> any == item }
@@ -67,7 +70,6 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
     }
 
     private fun onPhotoCollection(photoCollection: PhotoCollection) {
-        Log.d(TAG, "onPhotoCollection: loading ${photoCollection.photos.size} photos")
         if (photoCollection.page == 1) {
             photoAdapter.setItems(photoCollection.photos, null)
             title = selectTitleForResult(photoCollection)

@@ -1,21 +1,23 @@
 package com.example.domain.usecases
 
-import com.example.domain.entities.NetworkResponse
+import com.example.domain.entities.DataResponse
 import com.example.domain.entities.PhotoCollection
 import com.example.domain.repositories.PhotoRepository
 import javax.inject.Inject
 
-class SearchUseCase @Inject constructor(private val photoRepository: PhotoRepository) {
+class SearchUseCase @Inject constructor(private val photoRepository: PhotoRepository) :
+    PaginatedUseCase<PhotoCollection>() {
 
-    private var currentPage = 0
-    private var maxPages = 0
+    /**
+     * Indicates the current search term. If it's empty then no search is being currently run.
+     */
     private var currentSearchTerm = ""
 
-    suspend fun searchPhotos(searchTerm: String): NetworkResponse<PhotoCollection> {
+    suspend fun searchPhotos(searchTerm: String): DataResponse<PhotoCollection> {
         if (searchTerm.isEmpty() || searchTerm.isBlank()) {
-            return NetworkResponse(false, null, 400, "Empty search input.")
+            return DataResponse(false, null, "Empty search input.")
         }
-        val searchResult: NetworkResponse<PhotoCollection> = photoRepository.searchPhotos(
+        val searchResult: DataResponse<PhotoCollection> = photoRepository.searchPhotos(
             searchTerm = searchTerm,
             page = 0
         )
@@ -28,13 +30,8 @@ class SearchUseCase @Inject constructor(private val photoRepository: PhotoReposi
         return searchResult
     }
 
-    suspend fun requestNexPage(): NetworkResponse<PhotoCollection> {
-        if (currentPage == maxPages) {
-            return NetworkResponse(false, null, 400, "No more pages")
-        }
-
-        return photoRepository.searchPhotos(currentSearchTerm, currentPage++)
-    }
+    override val paginatedQuery: suspend (page: Int) -> DataResponse<PhotoCollection>
+        get() = { page -> photoRepository.searchPhotos(currentSearchTerm, page) }
 
     /**
      * Clears the search parameters and resets the page counters. If there was no search being run

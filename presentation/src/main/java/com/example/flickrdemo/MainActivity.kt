@@ -25,9 +25,11 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.requestLatestPhotos()
+        // Setup the back behaviour to cancel any search queries if possible and avoid closing the app
         onBackPressedDispatcher.addCallback {
             val searchReset = viewModel.clearSearch()
             if (searchReset) return@addCallback
+            // If there are no search queries, close the activity as intended
             finish()
         }
         val backgroundManager = BackgroundManager.getInstance(this)

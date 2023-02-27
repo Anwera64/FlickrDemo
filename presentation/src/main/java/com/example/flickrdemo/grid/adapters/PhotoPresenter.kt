@@ -53,11 +53,7 @@ class PhotoPresenter : Presenter() {
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {
         val cardView = viewHolder.view as? ImageCardView ?: return
-
         // Remove references to images so that the garbage collector can free up memory.
-
-        // Remove references to images so that the garbage collector can free up memory.
-        cardView.badgeImage = null
         cardView.mainImage = null
     }
 }

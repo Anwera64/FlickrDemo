@@ -11,6 +11,10 @@ import com.example.flickrdemo.MainViewModel
 import com.example.flickrdemo.grid.VerticalGridFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * This fragment is only used to accept search queries. Once the query is submitted it's queried
+ * through the View Model and the fragment is replaced with the VerticalGridFragment
+ */
 @AndroidEntryPoint
 class SearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
 
