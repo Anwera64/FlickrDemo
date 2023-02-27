@@ -12,7 +12,7 @@ import com.example.domain.entities.FlickrPhoto
 import com.example.domain.utils.DateUtil
 import com.example.flickrdemo.R
 
-class PhotoPresenter : Presenter() {
+class PhotoPresenter(private val onClick: (item: FlickrPhoto) -> Unit) : Presenter() {
 
     private var defaultCardImage: Drawable? = null
 
@@ -30,26 +30,13 @@ class PhotoPresenter : Presenter() {
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
         val photo: FlickrPhoto = item as? FlickrPhoto ?: throw Exception("Not a photo")
         val cardView = viewHolder.view as? PhotoView ?: return
-        cardView.setupImageView(photo)
+        cardView.setupImageView(photo, defaultCardImage)
+        cardView.binding.root.setOnClickListener {
+            onClick(item)
+        }
     }
 
-    private fun PhotoView.setupImageView(photo: FlickrPhoto) {
-        binding.titleText.text = photo.description
-        val dateString = DateUtil.parseToString(photo.date)
-        binding.contentText.text = resources.getString(
-            R.string.username_date_placeholder,
-            photo.username,
-            dateString
-        )
 
-        if (photo.photoUrl.isEmpty() && photo.photoUrl.isBlank()) return
-
-        Glide.with(context)
-            .load(photo.photoUrl)
-            .apply(RequestOptions.errorOf(defaultCardImage))
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-            .into(binding.mainImage)
-    }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {
         val cardView = viewHolder.view as? ImageCardView ?: return

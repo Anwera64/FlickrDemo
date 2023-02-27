@@ -8,10 +8,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.VerticalGridPresenter
+import com.example.domain.entities.FlickrPhoto
 import com.example.domain.entities.PhotoCollection
 import com.example.flickrdemo.MainActivity
 import com.example.flickrdemo.MainViewModel
 import com.example.flickrdemo.R
+import com.example.flickrdemo.detail.DetailFragment
 import com.example.flickrdemo.grid.adapters.PhotoPresenter
 import com.example.flickrdemo.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +27,8 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
     }
 
     private val viewModel: MainViewModel by activityViewModels()
-    private val photoAdapter: ArrayObjectAdapter = ArrayObjectAdapter(PhotoPresenter())
+    private val photoAdapter: ArrayObjectAdapter =
+        ArrayObjectAdapter(PhotoPresenter(::onPhotoClicked))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,15 @@ class VerticalGridFragment : VerticalGridSupportFragment() {
         setOnItemViewSelectedListener { _, item, _, _ ->
             onSelectedPositionChanged(item)
         }
+    }
+
+    private fun onPhotoClicked(photo: FlickrPhoto) {
+        val photoList = photoAdapter.unmodifiableList<Any>()
+        val index = photoList.indexOf(photo)
+        val mainActivity = activity as? MainActivity ?: return
+        mainActivity.openFragment(
+            DetailFragment.newInstance(index)
+        )
     }
 
     /**
