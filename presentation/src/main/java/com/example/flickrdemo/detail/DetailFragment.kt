@@ -5,14 +5,15 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.domain.entities.FlickrPhoto
 import com.example.domain.entities.PhotoCollection
 import com.example.domain.utils.DateUtil
+import com.example.flickrdemo.MainActivity
 import com.example.flickrdemo.MainViewModel
 import com.example.flickrdemo.R
 import com.example.flickrdemo.databinding.FragmentDetailBinding
@@ -36,6 +37,7 @@ class DetailFragment : Fragment() {
 
     private val viewmodel: MainViewModel by activityViewModels()
     private var binding: FragmentDetailBinding? = null
+    private var currentPhotoIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,13 +50,37 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewmodel.photoCollection.observe(viewLifecycleOwner, this::loadImages)
+        viewmodel.photoCollection.observe(viewLifecycleOwner, this::observeImages)
     }
 
-    private fun loadImages(photoCollection: PhotoCollection) {
+    private fun observeImages(photoCollection: PhotoCollection) {
+        currentPhotoIndex = arguments?.getInt(INDEX_OF_IMAGE) ?: 0
+        val photo = photoCollection.photos[currentPhotoIndex]
+        (activity as? MainActivity)?.onKeyPressedAction = { action ->
+            navigatePhotos(action, photoCollection.photos)
+        }
+        loadImage(photo)
+    }
+
+    private fun navigatePhotos(action: Int, photos: List<FlickrPhoto>) {
+        val nextPhoto = when (action) {
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                if (currentPhotoIndex + 1 > photos.size - 1) return
+                currentPhotoIndex++
+                photos[currentPhotoIndex]
+            }
+            KeyEvent.KEYCODE_DPAD_LEFT -> {
+                if (currentPhotoIndex - 1 < 0) return
+                currentPhotoIndex--
+                photos[currentPhotoIndex]
+            }
+            else -> return
+        }
+        loadImage(nextPhoto)
+    }
+
+    private fun loadImage(photo: FlickrPhoto) {
         binding?.run {
-            val photoIndex = arguments?.getInt(INDEX_OF_IMAGE) ?: 0
-            val photo = photoCollection.photos[photoIndex]
             titleText.text = photo.description
             val dateString = DateUtil.parseToString(photo.date)
             contentText.text = resources.getString(

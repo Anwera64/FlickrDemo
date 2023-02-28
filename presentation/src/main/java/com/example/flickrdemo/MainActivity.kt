@@ -2,6 +2,9 @@ package com.example.flickrdemo
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
@@ -19,6 +22,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private val viewModel: MainViewModel by viewModels()
+    var onKeyPressedAction: ((keyCode: Int) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,11 @@ class MainActivity : FragmentActivity() {
         val backgroundManager = BackgroundManager.getInstance(this)
         backgroundManager.attach(window)
         backgroundManager?.color = Color.BLACK
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        onKeyPressedAction?.invoke(keyCode)
+        return super.onKeyDown(keyCode, event)
     }
 
     fun openFragment(fragment: Fragment) {
