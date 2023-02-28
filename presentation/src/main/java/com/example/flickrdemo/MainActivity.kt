@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.leanback.app.BackgroundManager
+import androidx.leanback.app.VerticalGridSupportFragment
+import com.example.flickrdemo.detail.DetailFragment
+import com.example.flickrdemo.grid.VerticalGridFragment
 import com.example.flickrdemo.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,14 +34,22 @@ class MainActivity : FragmentActivity() {
         viewModel.requestLatestPhotos()
         // Setup the back behaviour to cancel any search queries if possible and avoid closing the app
         onBackPressedDispatcher.addCallback {
-            val searchReset = viewModel.clearSearch()
-            if (searchReset) return@addCallback
-            // If there are no search queries, close the activity as intended
-            finish()
+            handleBackNavigation()
         }
         val backgroundManager = BackgroundManager.getInstance(this)
         backgroundManager.attach(window)
         backgroundManager?.color = Color.BLACK
+    }
+
+    private fun handleBackNavigation() {
+        val searchReset = viewModel.clearSearch()
+        if (searchReset) return
+        if (supportFragmentManager.findFragmentById(R.id.main_frame) is DetailFragment) {
+            openFragment(VerticalGridFragment())
+            return
+        }
+        // If there are no search queries, close the activity as intended
+        finish()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
